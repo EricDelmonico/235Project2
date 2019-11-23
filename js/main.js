@@ -1,12 +1,89 @@
+//https://www.pinterest.com/pin/412712753337078757/ -- loading cursor
 "use strict";
 window.onload = init;
+let timeLoop;
+let genres;
 function init(){
     document.querySelector("#searchButton").onclick = search;
     document.querySelector("#sortby").onchange = changeSort;
     document.querySelector("#nextButton").onclick = movePage;
     document.querySelector("#prevButton").onclick = movePage;
     document.querySelector("#clearButton").onclick = clearResults;
+    genres = {
+        "Any Genre" : 0,
+        "Action" : 1,
+        "Adventure" : 2,
+        "Cars" : 3,
+        "Comedy" : 4,
+        "Dementia" : 5,
+        "Demons" : 6,
+        "Mystery" : 7,
+        "Drama" : 8,
+        "Ecchi" : 9,
+        "Fantasy" : 10,
+        "Game" : 11,
+        "Historical" : 13,
+        "Horror" : 14,
+        "Kids" : 15,
+        "Magic" : 16,
+        "Martial Arts" : 17,
+        "Mecha" : 18,
+        "Music" : 19,
+        "Parody" : 20,
+        "Samurai" : 21,
+        "Romance" : 22,
+        "School" : 23,
+        "Sci Fi" : 24,
+        "Shoujo" : 25,
+        "Shoujo Ai" : 26,
+        "Shounen" : 27,
+        "Shounen Ai" : 28,
+        "Space" : 29,
+        "Sports" : 30,
+        "Super Power" : 31,
+        "Vampire" : 32,
+        "Yaoi" : 33,
+        "Yuri" : 34,
+        "Harem" : 35,
+        "Slice Of Life" : 36,
+        "Supernatural" : 37,
+        "Military" : 38,
+        "Police" : 39,
+        "Psychological" : 40,
+        "Thriller" : 41,
+        "Seinen" : 42,
+        "Josei" : 43
+    };
+
+    let genresContainer = document.querySelector("#genre");
+    for (let g in genres){
+        let option = document.createElement("option");
+        option.value = g;
+        option.innerHTML = g;
+        genresContainer.appendChild(option);
+    }
+    genresContainer.onchange = changeGenre;
 }
+
+// ANIMATION STUFF
+let index = 1;
+function cycleAnim(){
+    document.querySelector("html").style.cursor = `url('loading/${index}.png'), auto`;
+    if (index == 24){
+        index = 0;
+    }
+    index++;
+}
+
+function startCursorAnim(){
+    timeLoop = setInterval(cycleAnim, 40);
+}
+
+function endCursorAnim(){
+    clearInterval(timeLoop);
+    document.querySelector("html").style.cursor = "auto";
+}
+// END ANIMATION STUFF
 
 let nextButton = document.querySelector("#nextButton");
 let prevButton = document.querySelector("#prevButton");
@@ -21,8 +98,15 @@ function changeSort(e){
     }
     else{
         let params = sortString.split("_");
-        sortString = `&order_by=${params[0]}&sort=${params[1]}&score=0.1`;
+        sortString = `&order_by=${params[0]}&sort=${params[1]}`;
     }
+}
+
+let genreString = "";
+let currentGenre = 0;
+function changeGenre(e){
+    genreString = e.target.value;
+    currentGenre = genres[genreString];
 }
 
 function clearResults(){
@@ -31,68 +115,39 @@ function clearResults(){
     prevButton.style.display = "none";
 
     let resultsContainer = document.querySelector("#results");
-    // Some debug stuff
-    let needToClear = resultsContainer.childElementCount > 0;
-    if (needToClear){
-        console.log("clearing past results...")
-    }
-    // end debug stuff
 
     while (resultsContainer.childElementCount > 0){
         resultsContainer.removeChild(resultsContainer.firstChild);
     }
-
-    // Some debug stuff
-    if (needToClear){
-        console.log("results cleared!")
-    }
-    // end debug stuff
 }
 
 let searchTerm = "";
 function search(){
     // Clear any existing results on the page
     clearResults();
+    
+    let queryTerm = "q=";
 
-    console.log("searching");
     // get the necessary info to make a search
     searchTerm = document.querySelector("#searchTerm").value;
     // processing the user input, and leave if there's nothing
     searchTerm = encodeURIComponent(searchTerm.trim());
     if (searchTerm.length <= 0) {
-        console.log("oh no");
+        queryTerm = "";
         return;
     }
-
-    // if we got this far, add the term to the url
-    let url = `https://api.jikan.moe/v3/search/anime?q=${searchTerm}${sortString}${pageString}`;
-    console.log(url);
-
-    // make the search using jQuery (boldly go)
-    $.ajax({
-        dataType: "json",
-        url: url,
-        data: null, //for now kek
-        success: querySuccess
-    });
-}
-
-function searchByGenre(){
-    // Clear existing results
-    clearResults();
-
-    // get the necessary info to make a search
-    searchTerm = document.querySelector("#genre").value;
-    // processing the user input, and leave if there's nothing
-    searchTerm = encodeURIComponent(searchTerm.trim());
-    if (searchTerm.length <= 0) {
-        console.log("oh no");
-        return;
+    else{
+        queryTerm += searchTerm;
     }
 
+    let genreString = currentGenre > 0 ? `genre=${currentGenre}` : "";
+    if(genreString.length > 0) genreString = "&" + genreString;
+
     // if we got this far, add the term to the url
-    let url = `https://api.jikan.moe/v3/search/anime?q=${searchTerm}${sortString}${pageString}`;
-    console.log(url);
+    let url = `https://api.jikan.moe/v3/search/anime?${queryTerm}${genreString}${sortString}${pageString}`;
+
+    // show the loading cursor
+    startCursorAnim();
 
     // make the search using jQuery (boldly go)
     $.ajax({
@@ -104,13 +159,12 @@ function searchByGenre(){
 }
 
 function querySuccess(obj){
-    console.log("search success!");
+    // hide the loading cursor
+    endCursorAnim();
     if (obj.error){
         // if something went wrong, save 
         // reason and abandon ship, yeet
         let msg = obj.error;
-        console.log("oh no");
-        console.log(obj.error);
         return;
     }
 
