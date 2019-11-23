@@ -27,3 +27,26 @@
     height: 100%;
     width: 100%;
 }
+
+#gridParent{
+    display: grid;
+
+    grid-template-areas:
+    "header  header  header"
+    ".       search  .     "
+    ".       results .     "
+    "footer  footer  footer";
+    grid-template-rows: 1fr, 2fr, 2fr, 1fr;
+}
+
+#heading{
+    display: flex;
+    grid-area: header;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    background: url("../CherryBlossoms.gif") no-repeat bottom;
+    background-size: 100vw 100vh;
+    height: 30vh;
+    margin: 0px;    
+}
