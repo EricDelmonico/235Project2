@@ -9,16 +9,19 @@
 <body>
     <div id="gridParent">
         <h1 id="heading">TCAF</h1>
-        <form>
-            <p>Search: </p><input type="search" id="searchTerm">
-            <input type="button" id="searchButton" value="Search">
-            <input type="button" id="clearButton" value="Clear Results">
-        </form>
-        <select id="sortby">
-            <option value="none">Don't Sort</option>
-            <option value="score_ascending">Rating (Lowest To Highest (You delinquent))</option>
-            <option value="score_descending">Rating (Highest To Lowest)</option>
-        </select>
+        <div id= "search">
+            <form>
+                <p>Search: </p><input type="search" id="searchTerm">
+                <input type="button" id="searchButton" value="Search">
+                <input type="button" id="clearButton" value="Clear Results">
+            </form>
+            <select id="sortby">
+                <option value="none">Don't Sort</option>
+                <option value="score_ascending">Rating (Lowest To Highest (You delinquent))</option>
+                <option value="score_descending">Rating (Highest To Lowest)</option>
+            </select>
+        </div>
+        
         <div id="results">
             <!--Results go here!-->
         </div>
