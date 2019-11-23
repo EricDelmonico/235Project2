@@ -1,3 +1,7 @@
+body{
+    background-color: #ffb6b9;
+}
+
 /*element that contains all search results*/
 #results{
     display:flex;
@@ -49,4 +53,38 @@
     background-size: 100vw 100vh;
     height: 30vh;
     margin: 0px;    
+}
+
+#search{
+    display: flex;
+    grid-area: search;
+    justify-content: space-between;
+    margin: 25px 0px;
+}
+
+#searchTerm{
+    width: 400px;
+    border: 3px solid #bbded6;
+    background-color: #fae3d9;
+    padding: 15px 30px;
+    border-radius: 50px;
+    color: #4d7a71;
+    font-size: 18px;
+    outline: none;
+}
+
+#searchButton{
+    position: relative;
+    top: -1.5px;
+    right: 130px;
+    cursor: pointer;
+    width: 116px;
+    height: 42px;
+    color: #4d7a71;
+    text-shadow: 2px 1px #d7fcf4;
+    background-color: #bbded6;
+    border: 0;
+    border-radius: 50px;
+    outline: none;
+    font-size: 18px;
 }
