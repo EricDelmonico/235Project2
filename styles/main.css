@@ -1,0 +1,29 @@
+/*element that contains all search results*/
+#results{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+/*the parent element of every result*/
+.result{
+    display:flex;
+    flex-direction: column;
+    margin: 20px;
+    width: 200px;
+}
+
+.result p{
+    margin: 5px;
+    text-align: center;
+}
+
+.result *{
+    max-width: 100%;
+}
+
+.result > img{
+    height: 100%;
+    width: 100%;
+}
