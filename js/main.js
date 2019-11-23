@@ -77,6 +77,32 @@ function search(){
     });
 }
 
+function searchByGenre(){
+    // Clear existing results
+    clearResults();
+
+    // get the necessary info to make a search
+    searchTerm = document.querySelector("#genre").value;
+    // processing the user input, and leave if there's nothing
+    searchTerm = encodeURIComponent(searchTerm.trim());
+    if (searchTerm.length <= 0) {
+        console.log("oh no");
+        return;
+    }
+
+    // if we got this far, add the term to the url
+    let url = `https://api.jikan.moe/v3/search/anime?q=${searchTerm}${sortString}${pageString}`;
+    console.log(url);
+
+    // make the search using jQuery (boldly go)
+    $.ajax({
+        dataType: "json",
+        url: url,
+        data: null, //for now kek
+        success: querySuccess
+    });
+}
+
 function querySuccess(obj){
     console.log("search success!");
     if (obj.error){
@@ -103,7 +129,7 @@ function querySuccess(obj){
         let title = document.createElement("p");
         title.innerHTML = anime.title;
         let score = document.createElement("p");
-        score.innerHTML = anime.score;        
+        score.innerHTML = anime.score;
 
         // show the anime's image
         let resultImage = document.createElement("img");
