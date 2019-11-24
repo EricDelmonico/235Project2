@@ -97,6 +97,11 @@ function changeSort(e){
         sortString = "";
     }
     else{
+        // give the capability to sort using the url,
+        // but for now we're doing it the old fashioned way.
+        // When using the url method, all results (including
+        // the least relevant results) get sorted, and thus
+        // you get toally irrelevant anime at the top
         let params = sortString.split("_");
         sortString = `&order_by=${params[0]}&sort=${params[1]}`;
     }
@@ -144,7 +149,7 @@ function search(){
     if(genreString.length > 0) genreString = "&" + genreString;
 
     // if we got this far, add the term to the url
-    let url = `https://api.jikan.moe/v3/search/anime?${queryTerm}${genreString}${sortString}${pageString}`;
+    let url = `https://api.jikan.moe/v3/search/anime?${queryTerm}${genreString}${pageString}`;
 
     // show the loading cursor
     startCursorAnim();
@@ -170,7 +175,13 @@ function querySuccess(obj){
 
     // Get our data pumped out
     let resultsContainer = document.querySelector("#results");
-    for (let anime of obj.results){
+    let results = obj.results;
+
+    if (sortString.length > 0){
+        results.sort((a, b) => b.score - a.score);    
+    }
+
+    for (let anime of results){
         if (anime.rated == "Rx")
             continue;
 
