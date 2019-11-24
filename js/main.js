@@ -171,6 +171,9 @@ function querySuccess(obj){
     // Get our data pumped out
     let resultsContainer = document.querySelector("#results");
     for (let anime of obj.results){
+        if (anime.rated == "Rx")
+            continue;
+
         // Creating the parent element
         let result = document.createElement("div");
         result.className = "result";
