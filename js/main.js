@@ -8,7 +8,7 @@ function init(){
     document.querySelector("#sortby").onchange = changeSort;
     document.querySelector("#nextButton").onclick = movePage;
     document.querySelector("#prevButton").onclick = movePage;
-    document.querySelector("#clearButton").onclick = clearResults;
+    //document.querySelector("#clearButton").onclick = clearResults;
     genres = {
         "Any Genre" : 0,
         "Action" : 1,

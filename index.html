@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>True Connoisseur's Anime Finder</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="styles/main.css">
 </head>
+
 <body>
     <div id="gridParent">
         <h1 id="heading">TCAF</h1>
-        <div id= "search">
+        <div class="search">
             <form>
-                <p>Search: </p><input type="search" id="searchTerm">
+                <input type="search" id="searchTerm">
                 <input type="button" id="searchButton" value="Search">
-                <input type="button" id="clearButton" value="Clear Results">
             </form>
+        </div>
+        <div id="sorting">
             <select id="sortby">
                 <option value="none">Don't Sort</option>
                 <option value="score_descending">Rating (Highest To Lowest)</option>
@@ -23,16 +26,21 @@
                 <!--Genres get filled programatically-->
             </select>
         </div>
-        
+
+
         <div id="results">
             <!--Results go here!-->
         </div>
-        <form>
-            <input type="button" id="prevButton" value="Previous Page">
-            <input type="button" id="nextButton" value="Next Page">
-        </form>
+        <div id="buttonGroup">
+            <form>
+                <input type="button" id="prevButton" value="Previous Page">
+                <input type="button" id="nextButton" value="Next Page">
+            </form>
+        </div>
+
     </div>
 
     <script src="js/main.js"></script>
 </body>
+
 </html>

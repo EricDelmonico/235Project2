@@ -1,14 +1,31 @@
 body{
     background-color: #ffb6b9;
+    height: 100%;
+    margin: 0px;
 }
 
-/*element that contains all search results*/
-#results{
-    display:flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    box-sizing: border-box;
+@media only screen and (min-width: 629px){
+    /*element that contains all search results*/
+    #results{
+        grid-area: results;
+        display:flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        box-sizing: border-box;
+    }
 }
+
+@media only screen and (max-width: 628px){
+    /*element that contains all search results*/
+    #results{
+        grid-area: results;
+        display:flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        box-sizing: border-box;
+    }
+}
+
 
 /*the parent element of every result*/
 .result{
@@ -16,20 +33,31 @@ body{
     flex-direction: column;
     margin: 20px;
     width: 200px;
+    border: 3px solid #bbded6;
+    background-color: #fae3d9;
+    padding: 15px 30px;
+    border-radius: 50px;
+    font-size: 18px;
+    outline: none;
+    align-items: center;
 }
 
 .result p{
     margin: 5px;
     text-align: center;
+    font-size: 18px;
+    color: #4d7a71;
 }
 
 .result *{
     max-width: 100%;
+    
 }
 
 .result > img{
-    height: 100%;
-    width: 100%;
+    
+    height: 75%;
+    width: 75%;
 }
 
 #gridParent{
@@ -38,9 +66,10 @@ body{
     grid-template-areas:
     "header  header  header"
     ".       search  .     "
+    ".       sort    .     "
     ".       results .     "
-    "footer  footer  footer";
-    grid-template-rows: 1fr, 2fr, 2fr, 1fr;
+    ".       buttons .     ";
+    grid-template-rows: 1fr, 2fr, 2fr;
 }
 
 #heading{
@@ -50,20 +79,21 @@ body{
     justify-content: center;
     align-items: center;
     background: url("../CherryBlossoms.gif") no-repeat bottom;
-    background-size: 100vw 100vh;
+    background-size: 100%;
     height: 30vh;
     margin: 0px;    
 }
 
-#search{
+.search{
     display: flex;
     grid-area: search;
-    justify-content: space-between;
+    justify-content: center;
+    flex-wrap: wrap;
     margin: 25px 0px;
 }
 
 #searchTerm{
-    width: 400px;
+    max-width: 400px;
     border: 3px solid #bbded6;
     background-color: #fae3d9;
     padding: 15px 30px;
@@ -78,6 +108,8 @@ body{
     top: -1.5px;
     right: 130px;
     cursor: pointer;
+    max-width: 116px;
+    max-height: 42px;
     width: 116px;
     height: 42px;
     color: #4d7a71;
@@ -87,4 +119,41 @@ body{
     border-radius: 50px;
     outline: none;
     font-size: 18px;
+}
+
+#sorting{
+    display: flex;
+    grid-area: sort;
+    justify-content: center;
+}
+
+#buttonGroup{
+    display: flex;
+    grid-area: buttons;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 25px 0px;
+}
+
+#nextButton{
+    float: right;
+    border: 3px solid #bbded6;
+    background-color: #fae3d9;
+    padding: 15px 30px;
+    border-radius: 50px;
+    color: #4d7a71;
+    font-size: 18px;
+    outline: none;
+    margin: 0px 5px;
+}
+
+#prevButton{
+    border: 3px solid #bbded6;
+    background-color: #fae3d9;
+    padding: 15px 30px;
+    border-radius: 50px;
+    color: #4d7a71;
+    font-size: 18px;
+    outline: none;
+    margin: 0px 5px;
 }
