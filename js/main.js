@@ -3,6 +3,7 @@
 window.onload = init;
 let timeLoop;
 let genres;
+let searchOngoing = false;
 function init(){
     document.querySelector("#searchButton").onclick = search;
     document.querySelector("#sortby").onchange = changeSort;
@@ -63,12 +64,15 @@ function init(){
         genresContainer.appendChild(option);
     }
     genresContainer.onchange = changeGenre;
+    
+    document.querySelector("#loadIndicator").style.display = "none";
 }
 
 // ANIMATION STUFF
 let index = 1;
 function cycleAnim(){
-    document.querySelector("html").style.cursor = `url('loading/${index}.png'), auto`;
+    document.querySelector("#loadIndicator").src = `loading/${index}.png`;
+    document.querySelector("#loadIndicator").style.display = "inline";
     if (index == 24){
         index = 0;
     }
@@ -80,8 +84,11 @@ function startCursorAnim(){
 }
 
 function endCursorAnim(){
+    if (timeLoop == null)
+        return;
+
     clearInterval(timeLoop);
-    document.querySelector("html").style.cursor = "auto";
+    document.querySelector("#loadIndicator").style.display = "none";
 }
 // END ANIMATION STUFF
 
@@ -98,10 +105,12 @@ function changeSort(e){
     }
     else{
         // give the capability to sort using the url,
-        // but for now we're doing it the old fashioned way.
-        // When using the url method, all results (including
+        // but for now we're sorting the old fashioned way.
+        // When using the in-url method, all results (including
         // the least relevant results) get sorted, and thus
-        // you get toally irrelevant anime at the top
+        // you get totally irrelevant anime at the top,
+        // simply because it has a higher score than 
+        // all the more relevant results
         let params = sortString.split("_");
         sortString = `&order_by=${params[0]}&sort=${params[1]}`;
     }
@@ -128,6 +137,11 @@ function clearResults(){
 
 let searchTerm = "";
 function search(){
+    // if there's a search ongoing,
+    // don't let the user make another
+    if (searchOngoing)
+        return;
+
     // Clear any existing results on the page
     clearResults();
     
@@ -154,6 +168,8 @@ function search(){
     // show the loading cursor
     startCursorAnim();
 
+    searchOngoing = true;
+
     // make the search using jQuery (boldly go)
     $.ajax({
         dataType: "json",
@@ -164,6 +180,7 @@ function search(){
 }
 
 function querySuccess(obj){
+
     // hide the loading cursor
     endCursorAnim();
     if (obj.error){
@@ -176,6 +193,14 @@ function querySuccess(obj){
     // Get our data pumped out
     let resultsContainer = document.querySelector("#results");
     let results = obj.results;
+
+    if (results.length == 0){
+        let error = document.createElement("p");
+        error.innerHTML = "No results found."
+        resultsContainer.appendChild(error);
+        searchOngoing = false;
+        return;
+    }
 
     if (sortString.length > 0){
         results.sort((a, b) => b.score - a.score);    
@@ -224,6 +249,8 @@ function querySuccess(obj){
     if (prevButton.style.display == "none"){
         prevButton.style.display = "inline";
     }
+
+    searchOngoing = false;
 }
 
 let page = 1;
