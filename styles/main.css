@@ -27,6 +27,10 @@ body{
     outline: none;
     align-items: center;
 }
+.result > img{
+    height: 100%;
+    border-radius: 50px;
+}
 
 .result p{
     margin: 5px;
@@ -37,14 +41,8 @@ body{
 
 .result *{
     max-width: 100%;
-    
 }
 
-.result > img{
-    
-    height: 75%;
-    width: 75%;
-}
 
 #gridParent{
     display: grid;
@@ -75,25 +73,15 @@ body{
     grid-area: search;
     justify-content: center;
     flex-wrap: wrap;
-    margin: 20px;
-
+    margin: 20px 0px;
 }
 
-#searchTerm{
-    width: 500px;
-    border: 3px solid #bbded6;
-    background-color: #fae3d9;
-    padding: 15px 30px;
-    border-radius: 50px;
-    color: #4d7a71;
-    font-size: 18px;
-    outline: none;
+form {
+    width: 732px;
 }
 
 #searchButton{
-    position: relative;
     margin-left: -130px;
-    margin-top: 8.5px;
     cursor: pointer;
     max-width: 116px;
     max-height: 42px;
@@ -106,6 +94,19 @@ body{
     border-radius: 50px;
     outline: none;
     font-size: 18px;
+}
+
+#searchTerm{
+    width: 500px;
+    border: 3px solid #bbded6;
+    background-color: #fae3d9;
+    padding: 15px 30px;
+    border-radius: 50px;
+    color: #4d7a71;
+    font-size: 18px;
+    outline: none;
+    margin-left: 116px;
+    padding-right: 125px;
 }
 
 #sorting{
@@ -154,7 +155,7 @@ body{
     border-radius: 10px;
 }
 
-@media only screen and (max-width: 628px){
+@media only screen and (max-width: 732px){
     /*element that contains all search results*/
     #results{
         grid-area: results;
@@ -164,11 +165,12 @@ body{
         box-sizing: border-box;
     }
 
-    #searchTerm{
-        width: 400px;
+    form {
+        width: 482px;
+        margin:0 auto;
     }
-}
 
-*{
-    border: 1px solid red;
+    #searchTerm{
+        width: 250px;
+    }
 }
