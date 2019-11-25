@@ -91,8 +91,8 @@ body{
 }
 
 #searchButton{
-    position: absolute;
-    margin-left: -125px;
+    position: relative;
+    margin-left: -130px;
     margin-top: 8.5px;
     cursor: pointer;
     max-width: 116px;
@@ -167,4 +167,8 @@ body{
     #searchTerm{
         width: 400px;
     }
+}
+
+*{
+    border: 1px solid red;
 }
