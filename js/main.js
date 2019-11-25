@@ -5,7 +5,7 @@ let timeLoop;
 let genres;
 let searchOngoing = false;
 function init(){
-    document.querySelector("#searchButton").onclick = search;
+    document.querySelector("#searchButton").onclick = buttonSearch;
     document.querySelector("#sortby").onchange = changeSort;
     document.querySelector("#nextButton").onclick = movePage;
     document.querySelector("#prevButton").onclick = movePage;
@@ -135,6 +135,12 @@ function clearResults(){
     }
 }
 
+function buttonSearch(){
+    // clear page number, THEN search
+    pageString = "&page=1";
+    search();
+}
+
 let searchTerm = "";
 function search(){
     // if there's a search ongoing,
@@ -164,6 +170,8 @@ function search(){
 
     // if we got this far, add the term to the url
     let url = `https://api.jikan.moe/v3/search/anime?${queryTerm}${genreString}${pageString}`;
+
+    console.log(url);
 
     // show the loading cursor
     startCursorAnim();
