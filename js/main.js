@@ -71,7 +71,7 @@ function init(){
     searchTermKey = "ead1758TCAF";
 
     let pastSearch = localStorage.getItem(searchTermKey);
-    if (pastSearch.length > 0){
+    if (pastSearch != null){
         document.querySelector("#searchTerm").value = pastSearch;
     }
 }
@@ -88,7 +88,7 @@ function cycleAnim(){
 }
 
 function startCursorAnim(){
-    timeLoop = setInterval(cycleAnim, 40);
+    timeLoop = setInterval(cycleAnim, 150);
 }
 
 function endCursorAnim(){
