@@ -79,7 +79,7 @@ function init(){
 // ANIMATION STUFF
 let index = 1;
 function cycleAnim(){
-    document.querySelector("#loadIndicator").src = `loading/${index}.png`;
+    document.querySelector("#loadIndicator").src = `images/loading/${index}.png`;
     document.querySelector("#loadIndicator").style.display = "inline";
     if (index == 24){
         index = 0;
