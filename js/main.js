@@ -4,8 +4,9 @@ window.onload = init;
 let timeLoop;
 let genres;
 let searchOngoing = false;
+let searchTermKey;
 function init(){
-    document.querySelector("#searchButton").onclick = search;
+    document.querySelector("#searchButton").onclick = buttonSearch;
     document.querySelector("#sortby").onchange = changeSort;
     document.querySelector("#nextButton").onclick = movePage;
     document.querySelector("#prevButton").onclick = movePage;
@@ -66,12 +67,19 @@ function init(){
     genresContainer.onchange = changeGenre;
     
     document.querySelector("#loadIndicator").style.display = "none";
+
+    searchTermKey = "ead1758TCAF";
+
+    let pastSearch = localStorage.getItem(searchTermKey);
+    if (pastSearch.length > 0){
+        document.querySelector("#searchTerm").value = pastSearch;
+    }
 }
 
 // ANIMATION STUFF
 let index = 1;
 function cycleAnim(){
-    document.querySelector("#loadIndicator").src = `loading/${index}.png`;
+    document.querySelector("#loadIndicator").src = `images/loading/${index}.png`;
     document.querySelector("#loadIndicator").style.display = "inline";
     if (index == 24){
         index = 0;
@@ -104,13 +112,9 @@ function changeSort(e){
         sortString = "";
     }
     else{
-        // give the capability to sort using the url,
-        // but for now we're sorting the old fashioned way.
-        // When using the in-url method, all results (including
-        // the least relevant results) get sorted, and thus
-        // you get totally irrelevant anime at the top,
-        // simply because it has a higher score than 
-        // all the more relevant results
+        // this is used in the url during a genre search,
+        // which means the user types nothing in, instead
+        // just choosing a genre.
         let params = sortString.split("_");
         sortString = `&order_by=${params[0]}&sort=${params[1]}`;
     }
@@ -135,6 +139,15 @@ function clearResults(){
     }
 }
 
+function buttonSearch(){
+    // clear page number, THEN search
+    pageString = "&page=1";
+
+    // Save the search term whenever a search is made
+    localStorage.setItem(searchTermKey, document.querySelector("#searchTerm").value);
+    search();
+}
+
 let searchTerm = "";
 function search(){
     // if there's a search ongoing,
@@ -153,7 +166,6 @@ function search(){
     searchTerm = encodeURIComponent(searchTerm.trim());
     if (searchTerm.length <= 0) {
         queryTerm = "";
-        return;
     }
     else{
         queryTerm += searchTerm;
@@ -164,6 +176,11 @@ function search(){
 
     // if we got this far, add the term to the url
     let url = `https://api.jikan.moe/v3/search/anime?${queryTerm}${genreString}${pageString}`;
+
+    if (searchTerm.length == 0){
+        url += sortString;
+    }
+    console.log(url);
 
     // show the loading cursor
     startCursorAnim();
@@ -187,6 +204,10 @@ function querySuccess(obj){
         // if something went wrong, save 
         // reason and abandon ship, yeet
         let msg = obj.error;
+        let error = document.createElement("p");
+        error.innerHTML = msg;
+        resultsContainer.appendChild(error);
+        searchOngoing = false;
         return;
     }
 
@@ -194,15 +215,27 @@ function querySuccess(obj){
     let resultsContainer = document.querySelector("#results");
     let results = obj.results;
 
-    if (results.length == 0){
+    // if there's a too short search term and no results, show error
+    if (searchTerm.length < 3 && results.length == 0){
         let error = document.createElement("p");
-        error.innerHTML = "No results found."
+        error.innerHTML = "Search term was less than three characters.";
         resultsContainer.appendChild(error);
         searchOngoing = false;
         return;
     }
 
-    if (sortString.length > 0){
+    // if there are no results, tell the user
+    if (results.length == 0){
+        let error = document.createElement("p");
+        error.innerHTML = "No results found.";
+        resultsContainer.appendChild(error);
+        searchOngoing = false;
+        return;
+    }
+
+    // if the search term has a length of zero,
+    // that means the user is just genre searching
+    if (sortString.length > 0 && searchTerm.length != 0){
         results.sort((a, b) => b.score - a.score);    
     }
 
