@@ -4,6 +4,7 @@ window.onload = init;
 let timeLoop;
 let genres;
 let searchOngoing = false;
+let searchTermKey;
 function init(){
     document.querySelector("#searchButton").onclick = buttonSearch;
     document.querySelector("#sortby").onchange = changeSort;
@@ -66,6 +67,13 @@ function init(){
     genresContainer.onchange = changeGenre;
     
     document.querySelector("#loadIndicator").style.display = "none";
+
+    searchTermKey = "ead1758TCAF";
+
+    let pastSearch = localStorage.getItem(searchTermKey);
+    if (pastSearch.length > 0){
+        document.querySelector("#searchTerm").value = pastSearch;
+    }
 }
 
 // ANIMATION STUFF
@@ -134,6 +142,9 @@ function clearResults(){
 function buttonSearch(){
     // clear page number, THEN search
     pageString = "&page=1";
+
+    // Save the search term whenever a search is made
+    localStorage.setItem(searchTermKey, document.querySelector("#searchTerm").value);
     search();
 }
 
