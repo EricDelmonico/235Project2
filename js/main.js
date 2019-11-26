@@ -88,7 +88,7 @@ function cycleAnim(){
 }
 
 function startCursorAnim(){
-    timeLoop = setInterval(cycleAnim, 150);
+    timeLoop = setInterval(cycleAnim, 40);
 }
 
 function endCursorAnim(){
@@ -180,7 +180,6 @@ function search(){
     if (searchTerm.length == 0){
         url += sortString;
     }
-    console.log(url);
 
     // show the loading cursor
     startCursorAnim();
